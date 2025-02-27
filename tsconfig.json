@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "checkJs": false,
+    "strict": false,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "module": "ES2015",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+    "**/*",
+  ],
+}
