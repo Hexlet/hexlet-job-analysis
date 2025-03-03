@@ -1,7 +1,6 @@
 import { PlaywrightCrawler, Dataset } from 'crawlee'
 
 const crawler = new PlaywrightCrawler({
-  // Use the requestHandler to process each of the crawled pages.
   async requestHandler({ request, page, enqueueLinks, log }) {
     const title = await page.title()
     log.info(`Title of ${request.loadedUrl} is '${title}'`)
@@ -25,7 +24,7 @@ const crawler = new PlaywrightCrawler({
 
     await Promise.all([pageLinks, vacancyLinks])
   },
-  maxRequestsPerCrawl: 2,
+  maxRequestsPerCrawl: 10,
   // Uncomment this option to see the browser window.
   headless: true,
 })

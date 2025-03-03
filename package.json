@@ -1,41 +1,39 @@
 {
-  "name": "@hexlet/nodejs-package",
+  "name": "@hexlet/job-analysis",
   "version": "0.0.3",
-  "description": "Node.js boilerplate package",
+  "description": "Job Analysis",
   "bin": {
-    "nodejs-package": "bin/nodejs-package.js"
+    "hexlet-analyze-jobs": "bin/analize-jobs.js"
   },
   "simple-git-hooks": {
     "pre-push": "npx lint-staged"
   },
   "engines": {
-    "node": ">=21"
+    "node": ">=23"
   },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hexlet-boilerplates/nodejs-package.git"
-  },
   "author": "Kirill Mokevnin",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hexlet-boilerplates/nodejs-package/issues"
-  },
   "type": "module",
-  "homepage": "https://github.com/hexlet-boilerplates/nodejs-package#readme",
   "dependencies": {
-    "@stylistic/eslint-plugin": "^4.1.0",
+    "@libsql/client": "^0.14.0",
+    "@sinclair/typebox": "^0.34.28",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "axios": "^1.8.1",
     "crawlee": "^3.12.2",
     "debug": "^4.4.0",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.40.0",
     "es-toolkit": "^1.32.0",
-    "jiti": "^2.4.2",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "ink": "^5.1.1",
+    "ollama": "^0.5.14",
+    "p-queue": "^8.1.0",
     "playwright": "^1.50.1",
-    "scrape-it": "^6.1.4",
-    "ts-node": "^10.9.2",
-    "vitest": "^3.0.7"
+    "react": "^18.0.0"
   },
   "lint-staged": {
     "*.js": "eslint --fix"
@@ -43,13 +41,21 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
     "@eslint/js": "^9.21.0",
+    "@stylistic/eslint-plugin": "^4.1.0",
+    "@types/debug": "^4.1.12",
+    "@types/react": "^19.0.10",
+    "drizzle-kit": "^0.30.5",
     "eslint": "^9.21.0",
     "eslint-plugin-import": "^2.31.0",
     "globals": "^16.0.0",
+    "jiti": "^2.4.2",
     "lint-staged": "^15.4.3",
     "npm-check-updates": "^17.1.15",
     "simple-git-hooks": "^2.11.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.25.0"
+    "typescript-eslint": "^8.25.0",
+    "vitest": "^3.0.7"
   }
 }
