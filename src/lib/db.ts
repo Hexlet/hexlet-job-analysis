@@ -1,8 +1,10 @@
-import dotenv from 'dotenv'
+import path from 'node:path'
+import os from 'node:os'
 import { drizzle } from 'drizzle-orm/libsql'
 import * as schema from '../db/schema.ts'
 
-const envs = dotenv.config().parsed ?? {}
+export const dbFileName = path.join(os.homedir(), 'hexlet-job-analysis.sqlite3')
+const url = `file:${dbFileName}`
 
-const db = drizzle(envs.DB_FILE_NAME, { schema, casing: 'snake_case' })
+const db = drizzle(url, { schema, casing: 'snake_case' })
 export default db

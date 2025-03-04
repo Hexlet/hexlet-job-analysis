@@ -57,7 +57,7 @@ async function requestChatGPT(prompt: string) {
 
 export async function extractSkills(vacancy: Vacancy) {
   const prompt = [
-    'Extract a list of programming tools mentioned in the following text. Do not use braces or slash or anything else like this. Every tool name have to be separated from the others. Return only the skills as a json { skills: [...] }',
+    'Extract a list of programming tools mentioned in the following text. Translate everything to english. Do not use braces or slash or anything else like this. Remove versions. Every tool name have to be separated from the others. Return only the skills as a json { skills: [...] }',
     vacancy.description,
   ].join('\n\n')
 

@@ -17,8 +17,20 @@
   },
   "author": "Kirill Mokevnin",
   "type": "module",
+  "oclif": {
+    "bin": "analyze-jobs",
+    "dirname": "hexlet-job-analysis",
+    "commands": "./src/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ]
+  },
   "dependencies": {
     "@libsql/client": "^0.14.0",
+    "@oclif/core": "^4.2.8",
+    "@oclif/plugin-help": "^6.2.26",
+    "@oclif/plugin-plugins": "^5.4.34",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "axios": "^1.8.1",

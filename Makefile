@@ -14,6 +14,9 @@ db-generate:
 db-migrate: db-generate
 	npx drizzle-kit migrate
 
+jobs-init:
+	DEBUG=app* npx tsx bin/analyze-jobs.ts init
+
 jobs-download:
 	DEBUG=app* npx tsx bin/analyze-jobs.ts download
 

@@ -3,15 +3,15 @@ import 'dotenv/config'
 import debug from 'debug'
 import * as schema from './db/schema.ts'
 
-import { eq } from 'drizzle-orm'
-import { Vacancy, VacancySkill } from '../types/index.js'
+import { eq, Logger } from 'drizzle-orm'
+import { LoggerFn, Vacancy, VacancySkill } from '../types/index.ts'
 import { extractSkills } from './lib/ai.ts'
 import db from './lib/db.ts'
 import PQueue from 'p-queue'
 
-const log = debug('app')
+const debugLog = debug('app')
 
-const loadSkills = async (v: Vacancy) => {
+async function loadSkills(v: Vacancy): Promise<string[]> {
   const skillNames = await extractSkills(v)
 
   await db.delete(schema.vs).where(eq(schema.vs.vacancy_id, v.id!))
@@ -31,13 +31,23 @@ const loadSkills = async (v: Vacancy) => {
     const vacancySkill = await db.insert(schema.vs).values(vacancySkillParams)
   }
 
+  await db.update(schema.v).set({ normalization_state: 'normalized' })
+    .where(eq(schema.v.id, v.id!))
+
   return skillNames
 }
 
-export default async () => {
-  const vacancies = await db.query.v.findMany({ limit: 100 })
-  const queue = new PQueue({ concurrency: 2 })
+async function normalize(term: string, log: LoggerFn) {
+  // use when ready https://orm.drizzle.team/docs/select#iterator
+  const vacancies = await db.query.v.findMany({
+    limit: 1000,
+    where: eq(schema.v.normalization_state, 'raw'),
+  })
+  log(`Raw vacancies count: ${vacancies.length}`)
+  const queue = new PQueue({ concurrency: 5 })
   const promises = vacancies.map(v => queue.add(() => loadSkills(v)))
-  const result = await Promise.all(promises)
-  console.log(result)
+  await Promise.all(promises)
+  log(`Vacancies Processed: ${vacancies.length}`)
 }
+
+export default normalize

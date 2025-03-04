@@ -59,3 +59,5 @@ namespace HeadHunter {
     clusters: boolean
   }
 }
+
+type LoggerFn = (message?: string, ...args: unknown[]) => void
