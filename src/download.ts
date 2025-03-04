@@ -1,20 +1,17 @@
 import axios from 'axios'
 import debug from 'debug'
 import PQueue from 'p-queue'
-import 'dotenv/config'
 
-import { drizzle } from 'drizzle-orm/libsql'
-import * as schema from './db/schema.ts'
-import { HeadHunter, SearchQuery, SearchQueryResult, Vacancy } from '../types/index.js'
 import { eq } from 'drizzle-orm'
-
-const db = drizzle(process.env.DB_FILE_NAME!, { schema, casing: 'snake_case' })
+import { HeadHunter, SearchQuery, SearchQueryResult, Vacancy } from '../types/index.js'
+import * as schema from './db/schema.ts'
+import db from './lib/db.ts'
 
 const log = debug('app')
 
 const apiUrl = 'https://api.hh.ru/vacancies'
 const params: HeadHunter.SearchParams = {
-  area: '1', // Москва
+  // area: '', // Москва
   text: 'php',
   per_page: 10,
   page: 0,
@@ -26,6 +23,7 @@ async function processVacancy(searchQuery: SearchQuery, url: string) {
   const response = await axios.get<HeadHunter.Vacancy>(url)
   const data = response.data
   const vacancyParams: Vacancy = {
+    normalization_state: 'raw',
     original_id: data.id,
     name: data.name,
     description: data.description,
@@ -76,11 +74,10 @@ export default async () => {
 
   const queue = new PQueue({ concurrency: 2 })
 
-  const vacancies = await Promise.all(
-    data.items.slice(1, 10).map((vacancy) => {
-      return queue.add(() => processVacancy(newSearchQuery, vacancy.url))
-    }),
-  )
+  const promises = data.items.slice(1, 10).map((vacancy) => {
+    return queue.add(() => processVacancy(newSearchQuery, vacancy.url))
+  })
+  const vacancies = await Promise.all(promises)
 
   // const result = {
   //   vacancies,

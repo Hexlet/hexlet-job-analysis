@@ -1,31 +1,43 @@
-import { Type } from '@sinclair/typebox'
-import { TypeCompiler } from '@sinclair/typebox/compiler'
-import ollama from 'ollama'
+import 'dotenv/config'
 
-const SkillListType = Type.Array(Type.String())
-// eslint-disable-next-line @typescript-eslint/unbound-method
-const SkillListSchema = TypeCompiler.Compile(SkillListType).Schema
+import debug from 'debug'
+import * as schema from './db/schema.ts'
 
-const prompt = [
-  'Выдели из текста список технологий в чистом виде. Верни результат в виде массива json',
-  'воу воу laravel же обновился до 3 версии, джанга django, orm c++',
-].join('.')
+import { eq } from 'drizzle-orm'
+import { Vacancy, VacancySkill } from '../types/index.js'
+import { extractSkills } from './lib/ai.ts'
+import db from './lib/db.ts'
+import PQueue from 'p-queue'
+
+const log = debug('app')
+
+const loadSkills = async (v: Vacancy) => {
+  const skillNames = await extractSkills(v)
+
+  await db.delete(schema.vs).where(eq(schema.vs.vacancy_id, v.id!))
+
+  for (const skillName of skillNames) {
+    const normalizedSkillname = skillName.trim().toLowerCase()
+    const skillParams = { name: normalizedSkillname }
+    const skill = await db.insert(schema.s).values(skillParams)
+      .onConflictDoUpdate({ target: schema.s.name, set: skillParams })
+      // .onConflictDoNothing()
+      .returning().get()
+
+    const vacancySkillParams: VacancySkill = {
+      vacancy_id: v.id!,
+      skill_id: skill.id,
+    }
+    const vacancySkill = await db.insert(schema.vs).values(vacancySkillParams)
+  }
+
+  return skillNames
+}
 
 export default async () => {
-  // const request: GenerateRequest & { stream: true } = {
-  //   prompt,
-  //   model: 'phi4',
-  //   stream: true,
-  // }
-  // const response = await ollama.generate(request)
-  const response = await ollama.chat({
-    model: 'phi4',
-    format: SkillListSchema,
-    messages: [{
-      role: 'user',
-      content: prompt,
-    }],
-  })
-  console.log(prompt)
-  console.log(response.message.content)
+  const vacancies = await db.query.v.findMany({ limit: 100 })
+  const queue = new PQueue({ concurrency: 2 })
+  const promises = vacancies.map(v => queue.add(() => loadSkills(v)))
+  const result = await Promise.all(promises)
+  console.log(result)
 }

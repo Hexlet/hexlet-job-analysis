@@ -19,6 +19,18 @@ export const sqr = sqliteTable('search_query_results', {
 export const v = sqliteTable('vacancies', {
   id: int().primaryKey({ autoIncrement: true }),
   original_id: text().unique().notNull(),
+  normalization_state: text({ enum: ['raw', 'normalized'] }).notNull(),
   description: text().notNull(),
   name: text().notNull(),
+})
+
+export const s = sqliteTable('skills', {
+  id: int().primaryKey({ autoIncrement: true }),
+  name: text().unique().notNull(),
+})
+
+export const vs = sqliteTable('vacancy_skills', {
+  id: int().primaryKey({ autoIncrement: true }),
+  vacancy_id: int().notNull().references(() => v.id),
+  skill_id: int().notNull().references(() => s.id),
 })

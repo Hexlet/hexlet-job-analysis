@@ -4,6 +4,8 @@ import * as schema from '../src/db/schema.ts'
 type SearchQuery = InferInsertModel<typeof schema.sq>
 type Vacancy = InferInsertModel<typeof schema.v>
 type SearchQueryResult = InferInsertModel<typeof schema.sqr>
+type Skill = InferInsertModel<typeof schema.s>
+type VacancySkill = InferInsertModel<typeof schema.vs>
 
 namespace HeadHunter {
   interface Salary {
@@ -50,10 +52,10 @@ namespace HeadHunter {
   }
 
   interface SearchParams {
-    area: string
+    area?: string
     text: string
-    per_page: number
-    page: number
+    per_page?: number
+    page?: number
     clusters: boolean
   }
 }

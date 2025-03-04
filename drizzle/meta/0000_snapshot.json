@@ -1,9 +1,41 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e5b98269-a454-42de-a790-73a1ff88cb13",
+  "id": "f02b8f95-b45b-42b2-936e-eec41bd906de",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "skills": {
+      "name": "skills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "skills_name_unique": {
+          "name": "skills_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "search_queries": {
       "name": "search_queries",
       "columns": {
@@ -127,6 +159,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "normalization_state": {
+          "name": "normalization_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -152,6 +191,64 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vacancy_skills": {
+      "name": "vacancy_skills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "vacancy_id": {
+          "name": "vacancy_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "skill_id": {
+          "name": "skill_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vacancy_skills_vacancy_id_vacancies_id_fk": {
+          "name": "vacancy_skills_vacancy_id_vacancies_id_fk",
+          "tableFrom": "vacancy_skills",
+          "tableTo": "vacancies",
+          "columnsFrom": [
+            "vacancy_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "vacancy_skills_skill_id_skills_id_fk": {
+          "name": "vacancy_skills_skill_id_skills_id_fk",
+          "tableFrom": "vacancy_skills",
+          "tableTo": "skills",
+          "columnsFrom": [
+            "skill_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

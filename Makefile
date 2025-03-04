@@ -1,3 +1,5 @@
+setup: install db-setup
+
 install: deps-install
 	npx simple-git-hooks
 
