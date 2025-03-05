@@ -4,3 +4,4 @@ storage
 *.sqlite3
 .env
 dist
+oclif.manifest.json
