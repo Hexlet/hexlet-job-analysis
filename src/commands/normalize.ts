@@ -3,7 +3,7 @@ import normalize from '../normalizing.ts'
 
 export default class Normalize extends Command {
   static override args = {
-    term: Args.string({ required: true, description: 'Search Term' }),
+    term: Args.string({ required: false, description: 'Search Term' }),
   }
 
   // static override description = 'describe the command here'

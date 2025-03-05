@@ -25,6 +25,14 @@ CREATE TABLE `vacancies` (
 	`original_id` text NOT NULL,
 	`normalization_state` text NOT NULL,
 	`description` text NOT NULL,
+	`speciality` text,
+	`position_level` text,
+	`timestamp` text,
+	`salary_from` integer,
+	`salary_to` integer,
+	`schedule_name` text,
+	`area_name` text,
+	`salary_currency` text,
 	`name` text NOT NULL
 );
 --> statement-breakpoint

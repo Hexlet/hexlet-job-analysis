@@ -6,26 +6,45 @@ import { eq } from 'drizzle-orm'
 import { HeadHunter, LoggerFn, SearchQuery, SearchQueryResult, Vacancy } from '../types/index.js'
 import * as schema from './db/schema.ts'
 import db from './lib/db.ts'
-import { Command } from '@oclif/core'
+
+// https://api.hh.ru/openapi/redoc#section/Obshaya-informaciya/Trebovaniya-k-zaprosam
+axios.defaults.headers.post['User-Agent'] = 'User-Agent: MyApp/1.0 (support@hexlet.io)'
 
 const debugLog = debug('app')
 
 const apiUrl = 'https://api.hh.ru/vacancies'
 
-async function processVacancy(searchQuery: SearchQuery, url: string) {
+async function processVacancy(searchQuery: SearchQuery, url: string, log: LoggerFn) {
   debugLog(url)
-  const response = await axios.get<HeadHunter.Vacancy>(url)
+
+  let response
+  try {
+    response = await axios.get<HeadHunter.Vacancy>(url)
+  }
+  catch (e) {
+    if (axios.isAxiosError(e)) {
+      debugLog(e.response?.data)
+    }
+    throw e
+  }
+
   const data = response.data
   const vacancyParams: Vacancy = {
     normalization_state: 'raw',
     original_id: data.id,
     name: data.name,
     description: data.description,
+    salary_currency: data.salary?.currency,
+    salary_from: data.salary?.from,
+    salary_to: data.salary?.to,
+    schedule_name: data.schedule?.name,
+    area_name: data.area?.name,
+    published_at: data.published_at,
   }
   const vacancy = await db.insert(schema.v).values(vacancyParams)
     .onConflictDoUpdate({ target: schema.v.original_id, set: vacancyParams })
     .returning().get()
-  debugLog('Vacancy %o', vacancy)
+  // debugLog('Vacancy %o', vacancy)
 
   const searchQueryResultParams: SearchQueryResult = {
     vacancy_id: vacancy.id,
@@ -37,28 +56,38 @@ async function processVacancy(searchQuery: SearchQuery, url: string) {
 }
 
 async function download(term: string, log: LoggerFn) {
+  log(`Term: ${term}`)
+
   const params: HeadHunter.SearchParams = {
     // area: '', // Москва
     text: term,
     per_page: 100,
     page: 0,
-    clusters: true,
+    clusters: false,
   }
 
   debugLog(apiUrl)
-  debugLog('Search Request', params)
-  const response = await axios.get<HeadHunter.SearchVacanciesResult>(apiUrl, { params })
+  log('Search Request', params)
 
-  // TODO: implement for every page
-  const data = response.data
+  let initResponse
+  try {
+    initResponse = await axios.get<HeadHunter.SearchVacanciesResult>(apiUrl, { params })
+  }
+  catch (e) {
+    if (axios.isAxiosError(e)) {
+      debugLog(e.response)
+    }
+    throw e
+  }
 
-  debugLog('Search Response', response.status)
-  log(`Term: ${term}`)
-  log(`Vacancies Found: ${data.found}`)
+  const initData = initResponse.data
+
+  log(`Vacancies Found: ${initData.found}`)
+  log(`Response Items Count: ${initData.items.length}`)
 
   const searchQueryParams: SearchQuery = {
     term: params.text,
-    vacancies_count: response.data.found,
+    vacancies_count: initResponse.data.found,
   }
 
   const oldSearchQuery = await db.query.sq.findFirst({
@@ -78,17 +107,33 @@ async function download(term: string, log: LoggerFn) {
     .returning().get()
   debugLog('newSearchQuery', newSearchQuery)
 
-  const queue = new PQueue({ concurrency: 5 })
+  const vacancies = []
+  let data = initData
 
-  const currentPageItems = data.items
+  for (let page = 0; page < data.pages; page += 1) {
+    if (page != 0) { // already loaded
+      const params: HeadHunter.SearchParams = {
+        text: term,
+        per_page: 100,
+        page,
+      }
+      log('Search Request', params)
+      const response = await axios.get<HeadHunter.SearchVacanciesResult>(apiUrl, { params })
+      data = response.data
+      log(`Response Items Count: ${data.items.length}`)
+    }
 
-  const promises = currentPageItems.map((vacancy) => {
-    return queue.add(() => processVacancy(newSearchQuery, vacancy.url))
-  })
-  const vacancies = await Promise.all(promises)
+    const queue = new PQueue({ concurrency: 1 })
+
+    const vacancyPromises = data.items.map((item) => {
+      return queue.add(() => processVacancy(newSearchQuery, item.url, log))
+    })
+    vacancies.push(...await Promise.all(vacancyPromises))
+  }
+
   return {
     vacancies,
-    totalVacanciesCount: data.found,
+    totalVacanciesCount: initData.found,
   }
 }
 

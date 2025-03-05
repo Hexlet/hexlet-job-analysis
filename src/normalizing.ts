@@ -11,12 +11,12 @@ import PQueue from 'p-queue'
 
 const debugLog = debug('app')
 
-async function loadSkills(v: Vacancy): Promise<string[]> {
-  const skillNames = await extractSkills(v)
+async function loadInfo(v: Vacancy) {
+  const result = await extractSkills(v)
 
   await db.delete(schema.vs).where(eq(schema.vs.vacancy_id, v.id!))
 
-  for (const skillName of skillNames) {
+  for (const skillName of result.skills) {
     const normalizedSkillname = skillName.trim().toLowerCase()
     const skillParams = { name: normalizedSkillname }
     const skill = await db.insert(schema.s).values(skillParams)
@@ -31,21 +31,24 @@ async function loadSkills(v: Vacancy): Promise<string[]> {
     const vacancySkill = await db.insert(schema.vs).values(vacancySkillParams)
   }
 
-  await db.update(schema.v).set({ normalization_state: 'normalized' })
+  const data: Partial<Vacancy> = {
+    normalization_state: 'normalized',
+    position_level: result.position_level,
+    speciality: result.speciality,
+  }
+  await db.update(schema.v).set(data)
     .where(eq(schema.v.id, v.id!))
-
-  return skillNames
 }
 
-async function normalize(term: string, log: LoggerFn) {
+async function normalize(term: string | undefined, log: LoggerFn) {
   // use when ready https://orm.drizzle.team/docs/select#iterator
   const vacancies = await db.query.v.findMany({
-    limit: 1000,
+    limit: 100,
     where: eq(schema.v.normalization_state, 'raw'),
   })
   log(`Raw vacancies count: ${vacancies.length}`)
   const queue = new PQueue({ concurrency: 5 })
-  const promises = vacancies.map(v => queue.add(() => loadSkills(v)))
+  const promises = vacancies.map(v => queue.add(() => loadInfo(v)))
   await Promise.all(promises)
   log(`Vacancies Processed: ${vacancies.length}`)
 }

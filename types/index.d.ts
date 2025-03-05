@@ -19,6 +19,11 @@ namespace HeadHunter {
     name: string
   }
 
+  interface Schedule {
+    id: string
+    name: string
+  }
+
   interface BaseVacancy {
     id: string
     name: string
@@ -31,7 +36,7 @@ namespace HeadHunter {
     url: string
     employment?: { id: string, name: string }
     experience?: { id: string, name: string }
-    schedule?: { id: string, name: string }
+    schedule?: Schedule
     type?: { id: string, name: string }
     response_letter_required: boolean
     accept_incomplete_resumes: boolean
@@ -56,7 +61,7 @@ namespace HeadHunter {
     text: string
     per_page?: number
     page?: number
-    clusters: boolean
+    clusters?: boolean
   }
 }
 

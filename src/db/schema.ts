@@ -1,4 +1,5 @@
-import { int, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
+import { foreignKey, int, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
 
 export const sq = sqliteTable('search_queries', {
   id: int().primaryKey({ autoIncrement: true }),
@@ -21,6 +22,16 @@ export const v = sqliteTable('vacancies', {
   original_id: text().unique().notNull(),
   normalization_state: text({ enum: ['raw', 'normalized'] }).notNull(),
   description: text().notNull(),
+  speciality: text(),
+  position_level: text(),
+  published_at: text('timestamp'),
+  salary_from: int(),
+  salary_to: int(),
+  schedule_name: text(),
+  // schedule_id: foreignKey(),
+  area_name: text(),
+  // area_id: foreignKey(config)
+  salary_currency: text(),
   name: text().notNull(),
 })
 

@@ -14,6 +14,8 @@ const log = debug('app')
 // https://github.com/ollama/ollama-js/blob/main/examples/structured_outputs/structured-outputs.ts
 const SkillsListSchema = z.object({
   skills: z.array(z.string()).describe('An array of skills'),
+  speciality: z.string().nullable().describe('name of speciality'),
+  position_level: z.string().nullable(),
 })
 
 const jsonSchema = zodToJsonSchema(SkillsListSchema)
@@ -34,7 +36,7 @@ async function requestOllama(prompt: string) {
 
   const result = response.message.content
   const data = SkillsListSchema.parse(JSON.parse(result))
-  return data.skills
+  return data
 }
 
 async function requestChatGPT(prompt: string) {
@@ -52,13 +54,18 @@ async function requestChatGPT(prompt: string) {
   })
   const result = chatCompletion.choices[0].message.content ?? ''
   const data = SkillsListSchema.parse(JSON.parse(result))
-  return data.skills
+  console.log(data)
+  return data
 }
 
 export async function extractSkills(vacancy: Vacancy) {
   const prompt = [
-    'Extract a list of programming tools mentioned in the following text. Translate everything to english. Do not use braces or slash or anything else like this. Remove versions. Every tool name have to be separated from the others. Return only the skills as a json { skills: [...] }',
-    vacancy.description,
+    `Extract data using format { speciality: development | devops | analytics | ... and so on, position_level: junior | middle | senior , skills: [] }.
+     Determine speciality based on the vacancy's name.
+     Translate everything to english. Do not use braces or slash or anything else like this.
+     Remove versions. Every tool name have to be separated from the others. Return data as a json`,
+    `Название вакансии: ${vacancy.name}`,
+    `Описание вакансии: ${vacancy.description}`,
   ].join('\n\n')
 
   log('extractSkills', vacancy.name)

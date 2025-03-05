@@ -11,8 +11,8 @@ export default class Analize extends Command {
 
   public async run(): Promise<void> {
     const { args } = await this.parse(Analize)
-    const result = await analyze(args.term)
     this.log(`Term: ${args.term}`)
+    const result = await analyze(args.term, this.log.bind(this))
     console.table(result)
   }
 }
