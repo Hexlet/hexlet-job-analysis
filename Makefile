@@ -41,7 +41,7 @@ test-coverage:
 lint:
 	npx eslint .
 
-publish:
-	npm publish
+release:
+	npx release-it
 
 .PHONY: test
