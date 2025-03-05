@@ -1,7 +1,7 @@
 # job-analysis
 
 ```bash
-npm i -g @hexlet-job-analysis
+npm i -g @hexlet/job-analysis
 analyze-jobs init
 analyze-jobs download <term>
 // Example: analyze-jobs download php
