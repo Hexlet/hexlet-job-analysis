@@ -1,0 +1,1 @@
+ALTER TABLE `vacancies` RENAME COLUMN "speciality" TO "specialty";

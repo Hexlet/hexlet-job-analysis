@@ -18,13 +18,13 @@ jobs-init:
 	DEBUG=app* npx tsx bin/analyze-jobs.ts init
 
 jobs-download:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts download php
+	DEBUG=app* npx tsx bin/analyze-jobs.ts download python
 
 jobs-normalize:
 	DEBUG=app* npx tsx bin/analyze-jobs.ts normalize
 
 jobs-analyze:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts analize php
+	DEBUG=app* npx tsx bin/analyze-jobs.ts analize python
 
 deps-install:
 	npm ci

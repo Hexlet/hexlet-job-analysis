@@ -6,10 +6,13 @@
 
 ## TODO
 
-* Add typespec for vacancies: https://api.hh.ru/openapi/redoc
-* Generate lib using https://github.com/hey-api/openapi-ts
-* Implement Downloader
-* Implement Analyzer
+- More analytics
+- Release (ts => js)
+
+### Maybe
+
+- Add typespec for vacancies: <https://api.hh.ru/openapi/redoc>
+- Generate lib using <https://github.com/hey-api/openapi-ts>
 
 ## Setup
 

@@ -22,7 +22,7 @@ export const v = sqliteTable('vacancies', {
   original_id: text().unique().notNull(),
   normalization_state: text({ enum: ['raw', 'normalized'] }).notNull(),
   description: text().notNull(),
-  speciality: text(),
+  specialty: text(),
   position_level: text(),
   published_at: text('timestamp'),
   salary_from: int(),

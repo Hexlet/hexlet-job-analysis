@@ -110,7 +110,8 @@ async function download(term: string, log: LoggerFn) {
   const vacancies = []
   let data = initData
 
-  for (let page = 0; page < data.pages; page += 1) {
+  // 100 vacancies is enough
+  for (let page = 0; page < 1; page += 1) {
     if (page != 0) { // already loaded
       const params: HeadHunter.SearchParams = {
         text: term,

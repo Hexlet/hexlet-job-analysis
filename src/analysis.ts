@@ -14,6 +14,7 @@ const getSkillFrequencies = async (searchQuery: SearchQuery) => {
     .innerJoin(schema.v, eq(schema.vs.vacancy_id, schema.v.id))
     .innerJoin(schema.sqr, eq(schema.v.id, schema.sqr.vacancy_id))
     .where(eq(schema.sqr.search_query_id, searchQuery.id!))
+    .limit(100)
     .groupBy(schema.s.name)
     .orderBy(desc(sql`count`))
 
@@ -32,8 +33,27 @@ async function analyze(term: string, log: LoggerFn) {
     .where(eq(schema.sqr.search_query_id, searchQuery.id))
   log(`Vacancies Analyzed: ${resultForVacanciesCount[0].vacancies_count}`)
 
+  const specialtyDistribution = await db
+    .select({
+      specialty: schema.v.specialty,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(schema.v)
+    .groupBy(schema.v.specialty)
+
+  console.table(specialtyDistribution)
+
+  const positionLevelDistribution = await db
+    .select({
+      position_level: schema.v.position_level,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(schema.v)
+    .groupBy(schema.v.position_level)
+  console.table(positionLevelDistribution)
+
   const skills = await getSkillFrequencies(searchQuery)
-  return skills
+  console.table(skills)
 }
 
 export default analyze
