@@ -3,7 +3,7 @@ setup: install db-setup
 install: deps-install
 	npx simple-git-hooks
 
-db-setup: db-init db-migrate
+db-setup: db-migrate
 
 db-init:
 	npx drizzle-kit generate --name=init
@@ -39,10 +39,13 @@ test-coverage:
 	npm test -- --coverage --coverageProvider=v8
 
 lint:
+	# npm run check-types
 	npx eslint .
 
-release:
+build:
 	npm run build
+
+release: build
 	npx release-it
 
 .PHONY: test

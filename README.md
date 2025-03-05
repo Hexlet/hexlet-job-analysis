@@ -1,8 +1,15 @@
 # job-analysis
 
-[![Node CI](https://github.com/hexlet-boilerplates/nodejs-package/workflows/Node%20CI/badge.svg)](https://github.com/hexlet-boilerplates/nodejs-package/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/dfc50c2d88cd46d069c1/maintainability)](https://codeclimate.com/github/hexlet-boilerplates/nodejs-package/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/dfc50c2d88cd46d069c1/test_coverage)](https://codeclimate.com/github/hexlet-boilerplates/nodejs-package/test_coverage)
+```bash
+npm i -g @hexlet-job-analysis
+analyze-jobs init
+analyze-jobs download <term>
+// Example: analyze-jobs download php
+// Example: analyze-jobs download java
+analyze-jobs normalize
+analyze-jobs analyze <term>
+// Example: analyze-jobs download java
+```
 
 ## TODO
 
