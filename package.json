@@ -1,5 +1,6 @@
 {
   "name": "@hexlet/job-analysis",
+  "private": false,
   "version": "0.0.5",
   "publishConfig": {
     "access": "public"
