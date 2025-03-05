@@ -52,7 +52,6 @@ async function requestChatGPT(prompt: string) {
   })
   const result = chatCompletion.choices[0].message.content ?? ''
   const data = SkillsListSchema.parse(JSON.parse(result))
-  console.log(data)
   return data
 }
 

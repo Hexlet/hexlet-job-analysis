@@ -23,6 +23,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc -b && cp -r drizzle dist/",
     "test": "vitest run",
+    "check-types": "tsc",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "npx oclif manifest && npx oclif readme",
     "test:watch": "vitest"
