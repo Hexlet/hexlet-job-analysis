@@ -24,6 +24,7 @@ const getSkillFrequencies = async (searchQuery: SearchQuery) => {
 async function analyze(term: string, log: LoggerFn) {
   const searchQuery = await db.query.sq.findFirst({ where: eq(schema.sq.term, term) })
   if (!searchQuery) {
+    log(`"${term}" does not downloaded. Check list`)
     return {}
   }
 

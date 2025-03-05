@@ -23,6 +23,9 @@ jobs-download:
 jobs-normalize:
 	DEBUG=app* npx tsx bin/dev.ts normalize
 
+jobs-list:
+	DEBUG=app* npx tsx bin/dev.ts list python
+
 jobs-analyze:
 	DEBUG=app* npx tsx bin/dev.ts analyze python
 
