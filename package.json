@@ -17,12 +17,11 @@
   },
   "files": [
     "./dist",
-    "./drizzle",
     "./oclif.manifest.json"
   ],
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc -b",
+    "build": "rm -rf dist && tsc -b && cp -r drizzle dist/",
     "test": "vitest run",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "npx oclif manifest && npx oclif readme",
