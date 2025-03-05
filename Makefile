@@ -42,6 +42,7 @@ lint:
 	npx eslint .
 
 release:
+	npm run build
 	npx release-it
 
 .PHONY: test

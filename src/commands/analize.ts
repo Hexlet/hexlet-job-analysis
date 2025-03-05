@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { Args, Command } from '@oclif/core'
-import analyze from '../analysis.ts'
+import analyze from '../analysis.js'
 
 const log = debug('app:cli')
 

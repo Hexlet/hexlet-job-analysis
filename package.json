@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "Job Analysis",
   "bin": {
-    "hexlet-analyze-jobs": "bin/analize-jobs.js"
+    "analyze-jobs": "./dist/bin/analize-jobs.js"
   },
   "simple-git-hooks": {
     "pre-push": "npx lint-staged"
@@ -12,6 +12,7 @@
     "node": ">=23"
   },
   "scripts": {
+    "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest"
   },

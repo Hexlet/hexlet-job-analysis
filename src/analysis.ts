@@ -1,6 +1,6 @@
 import { eq, count, desc, sql, Logger } from 'drizzle-orm'
-import * as schema from './db/schema.ts'
-import db from './lib/db.ts'
+import * as schema from './db/schema.js'
+import db from './lib/db.js'
 import { LoggerFn, SearchQuery } from '../types/index.js'
 
 const getSkillFrequencies = async (searchQuery: SearchQuery) => {

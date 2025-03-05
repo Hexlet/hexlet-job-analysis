@@ -2,8 +2,8 @@ import debug from 'debug'
 import path from 'node:path'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 import { Command } from '@oclif/core'
-import { dbFileName } from '../../config.ts'
-import db from '../lib/db.ts'
+import { dbFileName } from '../../config.js'
+import db from '../lib/db.js'
 
 const log = debug('app:cli')
 

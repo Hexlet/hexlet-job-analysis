@@ -1,5 +1,5 @@
 import { Args, Command } from '@oclif/core'
-import normalize from '../normalizing.ts'
+import normalize from '../normalizing.js'
 
 export default class Normalize extends Command {
   static override args = {

@@ -14,7 +14,7 @@ const log = debug('app')
 // https://github.com/ollama/ollama-js/blob/main/examples/structured_outputs/structured-outputs.ts
 const SkillsListSchema = z.object({
   skills: z.array(z.string()).describe('An array of skills'),
-  speciality: z.string().nullable().describe('name of speciality'),
+  specialty: z.string().nullable().describe('name of specialty'),
   position_level: z.string().nullable(),
 })
 
@@ -60,11 +60,11 @@ async function requestChatGPT(prompt: string) {
 
 export async function extractSkills(vacancy: Vacancy) {
   const prompt = [
-    `Extract data using format { speciality: development | devops | analytics | ... and so on, position_level: junior | middle | senior , skills: [] }.
-     Determine speciality based on the vacancy's name.
+    `Extract data using format { specialty: development | devops | analytics | ... and so on, position_level: junior | middle | senior , skills: [] }.
+     Determine specialty based on the vacancy's name.
      Translate everything to english. Do not use braces or slash or anything else like this.
      Remove versions. Every tool name have to be separated from the others.
-     Return data as a json where skills is array, speciality is string, position_level is string`,
+     Return data as a json where skills is array, specialty is string, position_level is string`,
     `Название вакансии: ${vacancy.name}`,
     `Описание вакансии: ${vacancy.description}`,
   ].join('\n\n')

@@ -1,12 +1,12 @@
 import 'dotenv/config'
 
 import debug from 'debug'
-import * as schema from './db/schema.ts'
+import * as schema from './db/schema.js'
 
 import { eq, Logger } from 'drizzle-orm'
-import { LoggerFn, Vacancy, VacancySkill } from '../types/index.ts'
-import { extractSkills } from './lib/ai.ts'
-import db from './lib/db.ts'
+import { LoggerFn, Vacancy, VacancySkill } from '../types/index.js'
+import { extractSkills } from './lib/ai.js'
+import db from './lib/db.js'
 import PQueue from 'p-queue'
 
 const debugLog = debug('app')
@@ -34,7 +34,7 @@ async function loadInfo(v: Vacancy) {
   const data: Partial<Vacancy> = {
     normalization_state: 'normalized',
     position_level: result.position_level,
-    speciality: result.speciality,
+    specialty: result.specialty,
   }
   await db.update(schema.v).set(data)
     .where(eq(schema.v.id, v.id!))
