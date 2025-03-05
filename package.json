@@ -32,7 +32,7 @@
   "oclif": {
     "bin": "analyze-jobs",
     "dirname": "hexlet-job-analysis",
-    "commands": "./dist/commands",
+    "commands": "./dist/src/commands",
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-plugins"
