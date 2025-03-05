@@ -17,6 +17,7 @@
   },
   "files": [
     "./dist",
+    "./drizzle",
     "./oclif.manifest.json"
   ],
   "main": "dist/index.js",
