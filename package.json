@@ -6,7 +6,7 @@
   },
   "description": "Job Analysis",
   "bin": {
-    "analyze-jobs": "dist/bin/analyze-jobs.js"
+    "analyze-jobs": "dist/bin/run.js"
   },
   "simple-git-hooks": {
     "pre-push": "npx lint-staged"
@@ -14,6 +14,10 @@
   "engines": {
     "node": ">=23"
   },
+  "files": [
+    "./dist",
+    "./oclif.manifest.json"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
@@ -31,6 +35,7 @@
     ]
   },
   "dependencies": {
+    "@hexlet/job-analysis": "^0.0.4",
     "@libsql/client": "^0.14.0",
     "@oclif/core": "^4.2.8",
     "@oclif/plugin-help": "^6.2.26",

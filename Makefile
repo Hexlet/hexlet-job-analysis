@@ -15,16 +15,16 @@ db-migrate: db-generate
 	npx drizzle-kit migrate
 
 jobs-init:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts init
+	DEBUG=app* npx tsx bin/dev.ts init
 
 jobs-download:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts download python
+	DEBUG=app* npx tsx bin/dev.ts download python
 
 jobs-normalize:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts normalize
+	DEBUG=app* npx tsx bin/dev.ts normalize
 
 jobs-analyze:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts analyze python
+	DEBUG=app* npx tsx bin/dev.ts analyze python
 
 deps-install:
 	npm ci
