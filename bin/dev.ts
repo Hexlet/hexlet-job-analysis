@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S tsx --type=ts --disable-warning=ExperimentalWarning
 
 import { execute } from '@oclif/core'
 

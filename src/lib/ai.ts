@@ -1,13 +1,10 @@
-import dotenv from 'dotenv'
 import ollama from 'ollama'
 import OpenAI from 'openai'
 import { z } from 'zod'
 import { zodToJsonSchema } from 'zod-to-json-schema'
 import { Vacancy } from '../../types/index.js'
 import debug from 'debug'
-
-// TODO: Если работать напрямую с openai key, то он почему-то обрезается
-const envs = dotenv.config().parsed ?? {}
+import { getConfig } from '../../config.js'
 
 const log = debug('app')
 
@@ -40,8 +37,9 @@ async function requestOllama(prompt: string) {
 }
 
 async function requestChatGPT(prompt: string) {
+  const config = await getConfig()
   const client = new OpenAI({
-    apiKey: envs.OPENAI_API_KEY,
+    apiKey: config.openAIApiKey,
   })
 
   const chatCompletion = await client.chat.completions.create({

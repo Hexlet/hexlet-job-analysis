@@ -7,6 +7,10 @@ type SearchQueryResult = InferInsertModel<typeof schema.sqr>
 type Skill = InferInsertModel<typeof schema.s>
 type VacancySkill = InferInsertModel<typeof schema.vs>
 
+interface Config {
+  openAIApiKey: string
+}
+
 namespace HeadHunter {
   interface Salary {
     from?: number

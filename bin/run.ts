@@ -2,4 +2,4 @@
 
 import { execute } from '@oclif/core'
 
-await execute({ development: false, dir: import.meta.url })
+await execute({ dir: import.meta.url })
