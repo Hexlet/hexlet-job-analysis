@@ -63,7 +63,8 @@ export async function extractSkills(vacancy: Vacancy) {
     `Extract data using format { speciality: development | devops | analytics | ... and so on, position_level: junior | middle | senior , skills: [] }.
      Determine speciality based on the vacancy's name.
      Translate everything to english. Do not use braces or slash or anything else like this.
-     Remove versions. Every tool name have to be separated from the others. Return data as a json`,
+     Remove versions. Every tool name have to be separated from the others.
+     Return data as a json where skills is array, speciality is string, position_level is string`,
     `Название вакансии: ${vacancy.name}`,
     `Описание вакансии: ${vacancy.description}`,
   ].join('\n\n')
