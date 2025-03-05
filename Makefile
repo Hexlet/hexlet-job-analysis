@@ -24,7 +24,7 @@ jobs-normalize:
 	DEBUG=app* npx tsx bin/analyze-jobs.ts normalize
 
 jobs-analyze:
-	DEBUG=app* npx tsx bin/analyze-jobs.ts analize python
+	DEBUG=app* npx tsx bin/analyze-jobs.ts analyze python
 
 deps-install:
 	npm ci

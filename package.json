@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "Job Analysis",
   "bin": {
-    "analyze-jobs": "./dist/bin/analize-jobs.js"
+    "analyze-jobs": "dist/bin/analyze-jobs.js"
   },
   "simple-git-hooks": {
     "pre-push": "npx lint-staged"
