@@ -1,6 +1,7 @@
 {
   "name": "@hexlet/job-analysis",
   "version": "0.0.3",
+  "private": false,
   "description": "Job Analysis",
   "bin": {
     "analyze-jobs": "dist/bin/analyze-jobs.js"
