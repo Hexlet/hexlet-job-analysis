@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import debug from 'debug'
 import * as schema from './db/schema.js'
 
