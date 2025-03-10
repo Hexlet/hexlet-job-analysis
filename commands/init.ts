@@ -4,7 +4,7 @@ import path from 'node:path'
 import { input } from '@inquirer/prompts'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 import { Command } from '@oclif/core'
-import { appDir, configFilePath, dbFileName } from '../../config.js'
+import { appDir, configFilePath, dbFileName } from '../config.js'
 
 const debugLog = debug('app:cli')
 
@@ -20,7 +20,7 @@ export default class Init extends Command {
     await fsp.writeFile(configFilePath, JSON.stringify(defaultConfig, null, 2), 'utf8')
     debugLog('Config file created:', configFilePath)
 
-    const dbModule = await import('../lib/db.js')
+    const dbModule = await import('../lib/utils/db.js')
 
     await migrate(dbModule.default, {
       migrationsFolder: path.join(import.meta.dirname, '../../drizzle'),

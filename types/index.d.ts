@@ -1,5 +1,5 @@
 import { InferInsertModel } from 'drizzle-orm'
-import * as schema from '../src/db/schema.ts'
+import * as schema from '../lib/db/schema.ts'
 
 type SearchQuery = InferInsertModel<typeof schema.sq>
 type Vacancy = InferInsertModel<typeof schema.v>

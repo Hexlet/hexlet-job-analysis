@@ -14,6 +14,10 @@ db-generate:
 db-migrate: db-generate
 	npx drizzle-kit migrate
 
+dev:
+	npx concurrently "npm run dev:client" "npm run dev:server:watch" "npm run dev:server"
+
+
 jobs-init:
 	DEBUG=app* npx tsx bin/dev.ts init
 

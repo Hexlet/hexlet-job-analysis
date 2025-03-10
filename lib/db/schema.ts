@@ -1,5 +1,4 @@
-import { sql } from 'drizzle-orm'
-import { foreignKey, int, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
+import { int, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
 
 export const sq = sqliteTable('search_queries', {
   id: int().primaryKey({ autoIncrement: true }),

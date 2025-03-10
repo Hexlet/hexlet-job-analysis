@@ -1,6 +1,6 @@
+// @ts-check
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-// @ts-check
 
 /**
  * @typedef {import('./types/index.ts').Config} Config

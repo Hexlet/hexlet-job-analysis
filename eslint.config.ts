@@ -24,6 +24,7 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 ] // satisfies Linter.Config[]

@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { Command } from '@oclif/core'
-import list from '../list.js'
+import list from '../lib/list.js'
 
 const debugLog = debug('app:cli')
 

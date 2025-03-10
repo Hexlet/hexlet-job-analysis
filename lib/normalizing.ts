@@ -3,8 +3,8 @@ import * as schema from './db/schema.js'
 
 import { eq, Logger } from 'drizzle-orm'
 import { LoggerFn, Vacancy, VacancySkill } from '../types/index.js'
-import { extractSkills } from './lib/ai.js'
-import db from './lib/db.js'
+import { extractSkills } from './utils/ai.js'
+import db from './utils/db.js'
 import PQueue from 'p-queue'
 
 const debugLog = debug('app')

@@ -1,20 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "skipLibCheck": true,
-    "noImplicitAny": true,
-    "checkJs": true,
-    "strict": true,
-    "noEmit": false,
-    "outDir": "./dist",
-    "moduleResolution": "bundler",
-    "module": "preserve",
-    "allowImportingTsExtensions": false,
-    "esModuleInterop": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
-  },
-  "include": [
-    "**/*",
-  ],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

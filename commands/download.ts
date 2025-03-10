@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { Args, Command } from '@oclif/core'
-import download from '../downloading.js'
+import download from '../lib/downloading.js'
 
 const log = debug('app:cli')
 

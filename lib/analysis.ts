@@ -1,7 +1,7 @@
-import { eq, count, desc, sql, Logger } from 'drizzle-orm'
+import { eq, count, desc, sql } from 'drizzle-orm'
 import * as schema from './db/schema.js'
-import db from './lib/db.js'
-import { LoggerFn, SearchQuery } from '../types/index.js'
+import db from './utils/db.js'
+import { LoggerFn, SearchQuery } from '../types'
 
 const getSkillFrequencies = async (searchQuery: SearchQuery) => {
   const skills = await db

@@ -5,7 +5,7 @@ import PQueue from 'p-queue'
 import { eq } from 'drizzle-orm'
 import { HeadHunter, LoggerFn, SearchQuery, SearchQueryResult, Vacancy } from '../types/index.js'
 import * as schema from './db/schema.js'
-import db from './lib/db.js'
+import db from './utils/db.js'
 
 // https://api.hh.ru/openapi/redoc#section/Obshaya-informaciya/Trebovaniya-k-zaprosam
 axios.defaults.headers.post['User-Agent'] = 'User-Agent: MyApp/1.0 (support@hexlet.io)'
@@ -41,6 +41,7 @@ async function processVacancy(searchQuery: SearchQuery, url: string, log: Logger
     area_name: data.area?.name,
     published_at: data.published_at,
   }
+
   const vacancy = await db.insert(schema.v).values(vacancyParams)
     .onConflictDoUpdate({ target: schema.v.original_id, set: vacancyParams })
     .returning().get()
