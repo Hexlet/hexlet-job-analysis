@@ -1,6 +1,9 @@
+import { Socket as ClientSocket } from 'socket.io-client/debug'
+
 interface ServerToClientEvents {
   noArg: () => void
-  message: (data: string) => void
+  test: (data: string) => void
+  output: (data: string) => void
   // basicEmit: (a: number, b: string, c: Buffer) => void
   // withAck: (d: string, callback: (e: number) => void) => void
 }

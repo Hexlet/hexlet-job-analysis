@@ -14,8 +14,12 @@ db-generate:
 db-migrate: db-generate
 	npx drizzle-kit migrate
 
+start:
+	npm run start
+
+
 dev:
-	npx concurrently "npm run dev:client" "npm run dev:server:watch" "npm run dev:server"
+	DEBUG=socket* DEBUG_COLORS=1 npx concurrently "npm run dev:client" "npm run dev:server:watch" "npm run dev:server"
 
 
 jobs-init:

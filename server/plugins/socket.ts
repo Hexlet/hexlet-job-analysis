@@ -2,9 +2,14 @@
 
 import { FastifyInstance, FastifyPluginAsync } from 'fastify'
 import fp from 'fastify-plugin'
-import { Server } from 'socket.io'
+import { Server, ServerOptions } from 'socket.io'
 import { ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData } from '../../types/socket'
 import { spawn } from 'node-pty'
+import debug from 'debug'
+
+// debug.enable('app')
+//
+// const debugLog = debug('app:socket')
 
 // export type FastifySocketioOptions = Partial<ServerOptions> & {
 //   preClose?: (done: Function) => void
@@ -18,15 +23,22 @@ const fastifySocketIO: FastifyPluginAsync = fp(
     //   done()
     // }
 
+    const options = {
+      cors: {
+        origin: 'http://localhost:5173',
+      },
+    } satisfies Partial<ServerOptions>
+
     const io = new Server<
       ClientToServerEvents,
       ServerToClientEvents,
       InterServerEvents,
       SocketData
-    >(fastify.server)
+    >(fastify.server, options)
     fastify.decorate('io', io)
 
     io.on('connection', (socket) => {
+      console.log('connection')
       if (socket.recovered) {
         return
       }
@@ -42,15 +54,16 @@ const fastifySocketIO: FastifyPluginAsync = fp(
         env: process.env,
       })
 
-      socket.data.terminal = term
+      // socket.data.terminal = term
 
       term.onData((data) => {
-        io.emit('message', data)
+        socket.emit('output', data)
       })
 
       socket.on('input', (data) => {
         term.write(data)
       })
+      socket.emit('test', 'jopa')
 
       // socket.emit('noArg')
     })

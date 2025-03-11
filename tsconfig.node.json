@@ -9,13 +9,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     /* Bundler mode */
-    "outDir": "dist",
+    "outDir": "backend",
     "rootDir": ".",
     "moduleResolution": "bundler",
     // "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "sourceMap": true,
+    // "sourceMap": true,
     // "noEmit": true,
     /* Linting */
     "strict": true,
@@ -31,6 +31,7 @@
     "config.js",
     "commands",
     "vite.config.ts",
-    "eslint.config.ts"
-, "lib", "commands"  ]
+    "eslint.config.ts",
+    "commands"
+  ]
 }

@@ -1,52 +1,67 @@
 import React, { useEffect, useRef } from 'react'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
+import { ManagerOptions, SocketOptions, io } from 'socket.io-client/debug'
+import { IdeClientSocket } from '@/types/socket'
 
 const XTerminal: React.FC = () => {
   const terminalRef = useRef<HTMLDivElement | null>(null)
-  const term = useRef<Terminal | null>(null)
-  const socket = useRef<WebSocket | null>(null)
+  const termRef = useRef<Terminal | null>(null)
+  const socketRef = useRef<IdeClientSocket | null>(null)
 
   useEffect(() => {
     if (terminalRef.current) {
-      term.current = new Terminal({
+      const terminal = new Terminal({
         cursorBlink: true,
         // theme: {
         //   background: '#000000',
         //   foreground: '#ffffff',
         // },
       })
+      termRef.current = terminal
 
       const fitAddon = new FitAddon()
-      term.current.loadAddon(fitAddon)
-      term.current.open(terminalRef.current)
+      terminal.loadAddon(fitAddon)
+      terminal.open(terminalRef.current)
       fitAddon.fit()
 
-      socket.current = new WebSocket('ws://localhost:3000/terminal')
-
-      socket.current.onopen = () => {
-        term.current?.write('Connected to Terminal\r\n')
+      const options: Partial<ManagerOptions & SocketOptions> = {
+        autoConnect: false,
       }
 
-      socket.current.onmessage = (event) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        term.current?.write(event.data)
-      }
+      const host = 'ws://localhost:3000'
+      const socket: IdeClientSocket = io(host, options)
+      socketRef.current = socket
 
-      term.current.onData((data) => {
-        socket.current?.send(data)
+      socket.on('connect', () => {
+        terminal.write('Connected to Terminal\r\n')
       })
+
+      socket.on('output', (data) => {
+        terminal.write(data)
+      })
+
+      terminal.onData((data) => {
+        socket.emit('input', data)
+      })
+
+      socket.connect()
+      terminal.focus()
 
       window.addEventListener('resize', () => fitAddon.fit())
 
       return () => {
-        socket.current?.close()
-        term.current?.dispose()
+        socket.close()
+        terminal.dispose()
       }
     }
   }, [])
 
-  return <div ref={terminalRef} />
+  return (
+    <div className="w-100 h-100">
+      <div className="w-100 h-100" ref={terminalRef} />
+    </div>
+  )
 }
 
 export default XTerminal

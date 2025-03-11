@@ -29,6 +29,7 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,
+    "resolveJsonModule": true,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
@@ -36,7 +37,6 @@
   "include": [
     "types",
     "src",
-    "config.js",
-    "lib",
+    "config.js"
   ]
 }
